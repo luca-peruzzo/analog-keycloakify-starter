@@ -1,0 +1,87 @@
+<div *ngFor="let fieldState of formFieldStates">
+  <app-group-label
+    [attribute]="fieldState.attribute"
+    [groupNameRef]="groupNameRef"
+    [i18n]="i18n"
+    [kcClsx]="kcClsx"
+  >
+  </app-group-label>
+
+  <ng-container *ngIf="BeforeField">
+    <app-before-field
+      [attribute]="fieldState.attribute"
+      [dispatchFormAction]="dispatchFormAction"
+      [displayableErrors]="fieldState.displayableErrors"
+      [valueOrValues]="fieldState.valueOrValues"
+      [kcClsx]="kcClsx"
+      [i18n]="i18n"
+    >
+    </app-before-field>
+  </ng-container>
+
+  <div
+    [ngClass]="kcClsx('kcFormGroupClass')"
+    [ngStyle]="{
+      display: fieldState.attribute.name === 'password-confirm' && !doMakeUserConfirmPassword ? 'none' : undefined,
+    }"
+  >
+    <div [ngClass]="kcClsx('kcLabelWrapperClass')">
+      <label
+        [attr.for]="fieldState.attribute.name"
+        [ngClass]="kcClsx('kcLabelClass')"
+      >
+        {{ i18n.advancedMsg(fieldState.attribute.displayName || '') }}
+        <span *ngIf="fieldState.attribute.required"> *</span>
+      </label>
+    </div>
+
+    <div [ngClass]="kcClsx('kcInputWrapperClass')">
+      <div
+        *ngIf="fieldState.attribute.annotations?.inputHelperTextBefore"
+        [ngClass]="kcClsx('kcInputHelperTextBeforeClass')"
+        [attr.id]="'form-help-text-before-' + fieldState.attribute.name"
+        aria-live="polite"
+      >
+        {{ i18n.advancedMsg(fieldState.attribute.annotations.inputHelperTextBefore) }}
+      </div>
+
+      <app-input-field-by-type
+        [attribute]="fieldState.attribute"
+        [valueOrValues]="fieldState.valueOrValues"
+        [displayableErrors]="fieldState.displayableErrors"
+        [dispatchFormAction]="dispatchFormAction"
+        [kcClsx]="kcClsx"
+        [i18n]="i18n"
+      >
+      </app-input-field-by-type>
+
+      <app-field-errors
+        [attribute]="fieldState.attribute"
+        [displayableErrors]="fieldState.displayableErrors"
+        [kcClsx]="kcClsx"
+      >
+      </app-field-errors>
+
+      <div
+        *ngIf="fieldState.attribute.annotations?.inputHelperTextAfter"
+        [ngClass]="kcClsx('kcInputHelperTextAfterClass')"
+        [attr.id]="'form-help-text-after-' + fieldState.attribute.name"
+        aria-live="polite"
+      >
+        {{ i18n.advancedMsg(fieldState.attribute.annotations.inputHelperTextAfter) }}
+      </div>
+
+      <ng-container *ngIf="AfterField">
+        <app-after-field
+          [attribute]="fieldState.attribute"
+          [dispatchFormAction]="dispatchFormAction"
+          [displayableErrors]="fieldState.displayableErrors"
+          [valueOrValues]="fieldState.valueOrValues"
+          [kcClsx]="kcClsx"
+          [i18n]="i18n"
+        >
+        </app-after-field>
+      </ng-container>
+    </div>
+  </div>
+</div>

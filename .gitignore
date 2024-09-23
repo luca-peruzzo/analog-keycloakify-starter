@@ -42,3 +42,21 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+/src/login/i18n/messages_defaultSet/
+/src/account/i18n/
+
+# VS Code devcontainers
+.devcontainer
+/.yarn
+/.yarnrc.yml
+
+/dist_keycloak
+/build
+/storybook-static
+
+/stories/assets/fonts/
+/build_storybook/
+/storybook-static/
+
+*storybook.log
