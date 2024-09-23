@@ -12,6 +12,7 @@ import { TemplateComponent } from '../../containers/template.component';
 import { KcClassDirective } from '../../directives/kc-class.directive';
 import { SafePipe } from '../../pipes/safe.pipe';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { UserProfileFormFieldsComponent } from '../../components/user-profile-form-fields/user-profile-form-fields.component';
 
 @Component({
   selector: 'kc-root',
@@ -27,6 +28,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
     TemplateComponent,
     TranslatePipe,
     KcInputDirective,
+    UserProfileFormFieldsComponent,
   ],
   providers: [{ provide: ComponentReference, useExisting: forwardRef(() => RegisterComponent) }],
 })

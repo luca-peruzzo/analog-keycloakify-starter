@@ -2,6 +2,7 @@ import { inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { KcContext } from 'keycloakify/login/KcContext';
 import { catchError, forkJoin, Observable, of, switchMap } from 'rxjs';
 import { KC_CONTEXT } from '../KcContext';
+import { Script } from '../models/script.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,13 +35,13 @@ export class ResourceInjectorService {
       }),
     );
   }
+
+  insertAdditionalScripts(scripts: Script[]) {
+    scripts.map((script) => this.createScript(script));
+  }
+
   private injectScripts() {
-    const scripts: {
-      type: string;
-      id: string;
-      src?: string;
-      textContent?: string;
-    }[] = [
+    const scripts: Script[] = [
       {
         type: 'module',
         id: `${this.kcContext.url.resourcesPath}/js/menu-button-links.js`,
@@ -62,7 +63,7 @@ export class ResourceInjectorService {
         );`,
       },
     ];
-    scripts.map((script) => this.createScript(script));
+    this.insertAdditionalScripts(scripts);
   }
   private createLink(url: string): Observable<void> {
     return new Observable<void>((observer) => {
@@ -100,9 +101,9 @@ export class ResourceInjectorService {
     src?: string;
     textContent?: string;
   }): void {
-    // check if the style is already injected
+    // check if the script is already injected
     if (Array.from(document.scripts).some((s) => s.id?.includes(id))) {
-      console.debug(`stylesheet: ${src} already loaded`);
+      console.debug(`script: ${src} already injected`);
       return;
     }
     const script = document.createElement('script');

@@ -6,7 +6,6 @@ import { KcContext } from 'keycloakify/login/KcContext/KcContext';
 import { ClassKey, getKcClsx } from 'keycloakify/login/lib/kcClsx';
 import { Observable } from 'rxjs';
 import { KcClassDirective } from '../directives/kc-class.directive';
-import { UseDefaultCssDirective } from '../directives/use-default-css.directive';
 import { I18N } from '../i18n';
 import { CLASSES, KC_CONTEXT, USE_DEFAULT_CSS } from '../KcContext';
 import { SafePipe } from '../pipes/safe.pipe';
@@ -17,17 +16,7 @@ import { ResourceInjectorService } from '../services/resource-injector.service';
   selector: 'kc-login-template',
   templateUrl: './template.component.html',
   standalone: true,
-  imports: [
-    RouterLink,
-    RouterLinkActive,
-    AsyncPipe,
-    SafePipe,
-    NgTemplateOutlet,
-    KcClassDirective,
-    UseDefaultCssDirective,
-    TranslatePipe,
-  ],
-  providers: [UseDefaultCssDirective, KcClassDirective],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe, SafePipe, NgTemplateOutlet, KcClassDirective, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemplateComponent implements OnInit {

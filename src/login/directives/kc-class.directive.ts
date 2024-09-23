@@ -12,7 +12,6 @@ import {
 import { ClassKey } from 'keycloakify/login';
 import { getKcClsx } from 'keycloakify/login/lib/kcClsx';
 import { ComponentReference } from '../classes/component-reference.class';
-import { UseDefaultCssDirective } from './use-default-css.directive';
 
 interface CssClassState {
   // PERF: could use a bit mask to represent state as all fields are boolean flags
@@ -26,7 +25,7 @@ type KcClassSupportedTypes = ClassKey[] | Set<ClassKey> | Partial<{ [key in Clas
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type NgClassSupportedTypes = string[] | Set<string> | { [key: string]: any } | null | undefined;
 
-@Directive({ selector: '[kcClass]', standalone: true, hostDirectives: [UseDefaultCssDirective] })
+@Directive({ selector: '[kcClass]', standalone: true })
 export class KcClassDirective implements DoCheck {
   private initialClasses: string[] = [];
   private rawClass: NgClassSupportedTypes;

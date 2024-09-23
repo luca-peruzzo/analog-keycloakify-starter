@@ -1,87 +1,98 @@
-<div *ngFor="let fieldState of formFieldStates">
-  <app-group-label
-    [attribute]="fieldState.attribute"
-    [groupNameRef]="groupNameRef"
-    [i18n]="i18n"
-    [kcClsx]="kcClsx"
-  >
-  </app-group-label>
+@let formFieldStates = formState().formFieldStates;
 
-  <ng-container *ngIf="BeforeField">
-    <app-before-field
-      [attribute]="fieldState.attribute"
-      [dispatchFormAction]="dispatchFormAction"
-      [displayableErrors]="fieldState.displayableErrors"
-      [valueOrValues]="fieldState.valueOrValues"
-      [kcClsx]="kcClsx"
-      [i18n]="i18n"
+@for (fieldState of formFieldStates; track fieldState.attribute) {
+  <!-- [groupNameRef]="groupNameRef"
+  TODO: verify this logic
+  -->
+  <kc-group-label
+    [attribute]="fieldState.attribute"
+    [doUseDefaultCss]="doUseDefaultCss()"
+    [classes]="classes()"
+  >
+  </kc-group-label>
+
+  @if (beforeField) {
+    <ng-container
+      [ngTemplateOutlet]="beforeField"
+      [ngTemplateOutletContext]="{
+        attribute: fieldState.attribute,
+        valueOrValues: fieldState.valueOrValues,
+        displayableErrors: fieldState.displayableErrors,
+        doUseDefaultCss: doUseDefaultCss(),
+        classes: classes(),
+      }"
     >
-    </app-before-field>
-  </ng-container>
+    </ng-container>
+  }
 
   <div
-    [ngClass]="kcClsx('kcFormGroupClass')"
-    [ngStyle]="{
-      display: fieldState.attribute.name === 'password-confirm' && !doMakeUserConfirmPassword ? 'none' : undefined,
-    }"
+    [kcClass]="'kcFormGroupClass'"
+    [style.display]="fieldState.attribute.name === 'password-confirm' && !doMakeUserConfirmPassword ? 'none' : 'block'"
   >
-    <div [ngClass]="kcClsx('kcLabelWrapperClass')">
+    <div [kcClass]="'kcLabelWrapperClass'">
       <label
-        [attr.for]="fieldState.attribute.name"
-        [ngClass]="kcClsx('kcLabelClass')"
+        [for]="fieldState.attribute.name"
+        [kcClass]="'kcLabelClass'"
       >
-        {{ i18n.advancedMsg(fieldState.attribute.displayName || '') }}
-        <span *ngIf="fieldState.attribute.required"> *</span>
+        {{ fieldState.attribute.displayName ?? '' | translate }}
+        @if (fieldState.attribute.required) {
+          *
+        }
       </label>
     </div>
 
-    <div [ngClass]="kcClsx('kcInputWrapperClass')">
-      <div
-        *ngIf="fieldState.attribute.annotations?.inputHelperTextBefore"
-        [ngClass]="kcClsx('kcInputHelperTextBeforeClass')"
-        [attr.id]="'form-help-text-before-' + fieldState.attribute.name"
-        aria-live="polite"
-      >
-        {{ i18n.advancedMsg(fieldState.attribute.annotations.inputHelperTextBefore) }}
-      </div>
+    <div [kcClass]="'kcInputWrapperClass'">
+      @if (fieldState.attribute.annotations.inputHelperTextBefore) {
+        <div
+          [kcClass]="'kcInputHelperTextBeforeClass'"
+          [id]="'form-help-text-before-' + fieldState.attribute.name"
+          aria-live="polite"
+        >
+          {{ fieldState.attribute.annotations.inputHelperTextBefore | translate }}
+        </div>
+      }
 
-      <app-input-field-by-type
+      <kc-input-field-by-type
         [attribute]="fieldState.attribute"
         [valueOrValues]="fieldState.valueOrValues"
         [displayableErrors]="fieldState.displayableErrors"
-        [dispatchFormAction]="dispatchFormAction"
-        [kcClsx]="kcClsx"
-        [i18n]="i18n"
+        [doUseDefaultCss]="doUseDefaultCss()"
+        [classes]="classes()"
+        (dispatchFormAction)="onDispatch($event)"
       >
-      </app-input-field-by-type>
+      </kc-input-field-by-type>
 
-      <app-field-errors
+      <kc-field-errors
         [attribute]="fieldState.attribute"
         [displayableErrors]="fieldState.displayableErrors"
-        [kcClsx]="kcClsx"
+        [doUseDefaultCss]="doUseDefaultCss()"
+        [classes]="classes()"
       >
-      </app-field-errors>
-
-      <div
-        *ngIf="fieldState.attribute.annotations?.inputHelperTextAfter"
-        [ngClass]="kcClsx('kcInputHelperTextAfterClass')"
-        [attr.id]="'form-help-text-after-' + fieldState.attribute.name"
-        aria-live="polite"
-      >
-        {{ i18n.advancedMsg(fieldState.attribute.annotations.inputHelperTextAfter) }}
-      </div>
-
-      <ng-container *ngIf="AfterField">
-        <app-after-field
-          [attribute]="fieldState.attribute"
-          [dispatchFormAction]="dispatchFormAction"
-          [displayableErrors]="fieldState.displayableErrors"
-          [valueOrValues]="fieldState.valueOrValues"
-          [kcClsx]="kcClsx"
-          [i18n]="i18n"
+      </kc-field-errors>
+      @if (fieldState.attribute.annotations.inputHelperTextAfter) {
+        <div
+          [kcClass]="'kcInputHelperTextAfterClass'"
+          [id]="'form-help-text-after-' + fieldState.attribute.name"
+          aria-live="polite"
         >
-        </app-after-field>
-      </ng-container>
+          {{ fieldState.attribute.annotations.inputHelperTextAfter | translate }}
+        </div>
+      }
+
+      @if (afterField) {
+        <ng-container
+          [ngTemplateOutlet]="afterField"
+          [ngTemplateOutletContext]="{
+            attribute: fieldState.attribute,
+            valueOrValues: fieldState.valueOrValues,
+            displayableErrors: fieldState.displayableErrors,
+            doUseDefaultCss: doUseDefaultCss(),
+            classes: classes(),
+          }"
+        >
+        </ng-container>
+      }
+      <!-- NOTE: Downloading of html5DataAnnotations scripts is done in the useUserProfileForm hook -->
     </div>
   </div>
-</div>
+}

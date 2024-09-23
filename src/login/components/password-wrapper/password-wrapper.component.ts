@@ -6,6 +6,7 @@ import {
   ContentChild,
   Directive,
   ElementRef,
+  forwardRef,
   inject,
   input,
   signal,
@@ -13,6 +14,8 @@ import {
 } from '@angular/core';
 import { KcClassDirective } from '../../directives/kc-class.directive';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ComponentReference } from '../../classes/component-reference.class';
+import { ClassKey } from 'keycloakify/login';
 
 @Directive({
   selector: '[kcInput]',
@@ -24,14 +27,24 @@ export class KcInputDirective {
 
 @Component({
   selector: 'kc-password-wrapper',
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [KcClassDirective, TranslatePipe, AsyncPipe],
   templateUrl: './password-wrapper.component.html',
+  providers: [{ provide: ComponentReference, useExisting: forwardRef(() => PasswordWrapperComponent) }],
 })
-export class PasswordWrapperComponent implements AfterContentInit {
+export class PasswordWrapperComponent extends ComponentReference implements AfterContentInit {
   @ContentChild(KcInputDirective, { static: true }) input: KcInputDirective | undefined;
   passwordInputId = input<string>();
+  override doUseDefaultCss = input<boolean>();
+  override classes = input<Partial<Record<ClassKey, string>>>();
 
   isPasswordRevealed: WritableSignal<boolean> = signal(false);
 

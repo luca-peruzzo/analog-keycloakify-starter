@@ -24,13 +24,11 @@
       [action]="url.registrationAction"
       method="post"
     >
-      <!-- <UserProfileFormFields
-      kcContext={kcContext}
-      i18n={i18n}
-      kcClsx={kcClsx}
-      onIsFormSubmittableValueChange={setIsFormSubmittable}
-      doMakeUserConfirmPassword={doMakeUserConfirmPassword}
-  /> -->
+      <kc-user-profile-form-fields
+        [classes]="classes()"
+        [doUseDefaultCss]="doUseDefaultCss()"
+        (onIsFormSubmittable)="isFormSubmittable.set($event)"
+      ></kc-user-profile-form-fields>
       @if (termsAcceptanceRequired) {
         <div className="form-group">
           <div [kcClass]="'kcInputWrapperClass'">
@@ -88,7 +86,10 @@
         >
           <div [kcClass]="'kcFormOptionsWrapperClass'">
             <span>
-              <a [href]="url.loginUrl">{{ 'backToLogin' | translate }}</a>
+              <a
+                [href]="url.loginUrl"
+                [innerHTML]="'backToLogin' | translate | safe: 'html'"
+              ></a>
             </span>
           </div>
         </div>

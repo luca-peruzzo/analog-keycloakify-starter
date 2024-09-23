@@ -8,15 +8,16 @@ import { getI18n, I18n, I18N } from './login/i18n';
 import { CLASSES, KC_CONTEXT, USE_DEFAULT_CSS } from './login/KcContext';
 import { getKcContextMock } from './login/KcContextMock';
 import { I18nService } from './login/services/i18n.service';
+import { DO_MAKE_USER_CONFIRM_PASSWORD } from './login/services/user-profile-form.service';
 
 if (import.meta.env.DEV) {
   window.kcContext = getKcContextMock({
-    pageId: 'login.ftl',
+    pageId: 'register.ftl',
     overrides: {},
   });
 }
 
-const classes = { kcBodyClass: 'lp' } satisfies { [key in ClassKey]?: string };
+const classes = {} satisfies { [key in ClassKey]?: string };
 
 if (!window.kcContext) {
   const NoContextComponentPromise = import('./no-context.component').then((c) => c.NoContextComponent);
@@ -24,14 +25,18 @@ if (!window.kcContext) {
 } else {
   let ComponentBootstrapPromise;
   let doUseDefaultCss = true;
+  let doMakeUserConfirmPassword = false;
   const kcContext = window.kcContext;
-  console.log(kcContext.pageId);
+
   switch (kcContext.pageId) {
     case 'login.ftl':
       doUseDefaultCss = true;
       ComponentBootstrapPromise = import('./login/pages/login/login.component').then((c) => c.LoginComponent);
       break;
-    // case 'register.ftl':
+    case 'register.ftl':
+      doUseDefaultCss = true;
+      ComponentBootstrapPromise = import('./login/pages/register/register.component').then((c) => c.RegisterComponent);
+      break;
     // case 'info.ftl':
     // case 'error.ftl':
     // case 'login-reset-password.ftl':
@@ -74,11 +79,11 @@ if (!window.kcContext) {
     //   break;
     default:
       doUseDefaultCss = false;
+      doMakeUserConfirmPassword = false;
       ComponentBootstrapPromise = import('./no-context.component').then((c) => c.NoContextComponent);
       break;
   }
   if (ComponentBootstrapPromise) {
-    console.log('bootstrap');
     ComponentBootstrapPromise.then((ComponentBootstrap) => {
       bootstrapApplication(ComponentBootstrap, {
         providers: [
@@ -87,6 +92,7 @@ if (!window.kcContext) {
             provide: KC_CONTEXT,
             useValue: window.kcContext,
           },
+          { provide: DO_MAKE_USER_CONFIRM_PASSWORD, useValue: doMakeUserConfirmPassword },
           {
             provide: APP_INITIALIZER,
             multi: true,
@@ -116,7 +122,6 @@ if (!window.kcContext) {
           },
         ],
       }).then((appRef) => {
-        console.log('appRef: ', appRef);
         appRef.components.forEach((componentRef) => {
           if ('classes' in componentRef.instance) {
             componentRef.setInput('classes', classes);
