@@ -2,11 +2,14 @@ import { ChangeDetectionStrategy, Component, forwardRef, inject, input } from '@
 import { ClassKey } from 'keycloakify/login';
 import { KcContext } from 'keycloakify/login/KcContext';
 import { ComponentReference } from '../../classes/component-reference.class';
+import { TemplateComponent } from '../../containers/template.component';
+import { KcClassDirective } from '../../directives/kc-class.directive';
 import { KC_CONTEXT } from '../../KcContext';
+import { TranslatePipe } from "../../pipes/translate.pipe";
 
 @Component({
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe, TemplateComponent, KcClassDirective],
   selector: 'kc-root',
   templateUrl: 'code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
