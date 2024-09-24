@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { computed, effect, inject, Injectable, InjectionToken, signal, Signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, InjectionToken, signal, Signal, WritableSignal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Attribute, KcContext, PasswordPolicies, Validators } from 'keycloakify/login/KcContext';
 import type { KcContextLike as KcContextLike_i18n, MessageKey_defaultSet } from 'keycloakify/login/i18n';
@@ -456,7 +456,6 @@ export class UserProfileFormService {
           id: `${this.kcContext.url.resourcesPath}/js/${key}.js`,
         })),
     );
-    effect(() => console.log(this.state()));
   }
 
   public dispatchFormAction(formAction: FormAction) {
