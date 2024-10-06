@@ -2,52 +2,17 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
-import { fixupPluginRules } from '@eslint/compat';
-import { configs, rules } from 'eslint-plugin-storybook';
 import prettier from 'eslint-plugin-prettier';
-
-const storybook = fixupPluginRules({
-  rules,
-  configs,
-  meta: { name: 'stroybook', version: '0.8.0' },
-});
 
 export default tseslint.config(
   {
     files: ['*.stories.@(ts|tsx|js|jsx|mjs|cjs)', '*.story.@(ts|tsx|js|jsx|mjs|cjs)'],
     plugins: {
-      storybook,
       prettier,
     },
     rules: {
       'import/no-anonymous-default-export': 'off',
-      'storybook/await-interactions': 'error',
-      'storybook/context-in-play-function': 'error',
-      'storybook/default-exports': 'error',
-      'storybook/hierarchy-separator': 'warn',
-      'storybook/no-redundant-story-name': 'warn',
-      'storybook/prefer-pascal-case': 'warn',
-      'storybook/story-exports': 'error',
-      'storybook/use-storybook-expect': 'error',
-      'storybook/use-storybook-testing-library': 'error',
       'prettier/prettier': ['error', {}],
-    },
-  },
-  {
-    files: ['.storybook/main.@(js|cjs|mjs|ts)'],
-    plugins: {
-      storybook,
-      prettier,
-    },
-    rules: {
-      'storybook/no-uninstalled-addons': 'error',
-      'prettier/prettier': [
-        'error',
-        {},
-        {
-          usePrettierrc: true,
-        },
-      ],
     },
   },
   {

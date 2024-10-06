@@ -1,5 +1,5 @@
-import { i18nBuilder } from 'keycloakify/login/i18n/noJsx';
-import { ThemeName } from '../kc.gen';
+import { i18nBuilder } from '@keycloakify/angular/login';
+import type { ThemeName } from '../kc.gen';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { getI18n, ofTypeI18n } = i18nBuilder

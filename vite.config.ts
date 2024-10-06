@@ -16,10 +16,6 @@ export default defineConfig(({ mode }) => ({
     angular(),
     keycloakify({
       accountThemeImplementation: 'none',
-      keycloakVersionTargets: {
-        '22-to-25': true,
-        'all-other-versions': false,
-      },
     }),
   ],
   test: {
