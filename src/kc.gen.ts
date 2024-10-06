@@ -20,6 +20,7 @@ export const kcEnvDefaults: Record<KcEnvName, string> = {};
 
 export type KcContext =
     | import("./login/KcContext").KcContext
+    | import("./account/KcContext").KcContext
     ;
 
 declare global {
@@ -80,6 +81,39 @@ export async function bootstrapKcApplication(params: {
                             "userProfileFormFields",
                             UserProfileFormFieldsComponent
                         );
+                    }
+                });
+            }
+            break;
+        case "account":
+            {
+                const [
+                    { provideKeycloakifyAngular },
+                    { getI18n },
+                    {
+                        PageComponent,
+                        TemplateComponent,
+                        doUseDefaultCss,
+                        classes,
+                    },
+                ] = await Promise.all([
+                    import('@keycloakify/angular/login/providers/keycloakify-angular'),
+                    import('./account/i18n'),
+                    import('./account/KcPage').then(({ getKcPage }) => getKcPage(kcContext.pageId)),
+                ] as const);
+
+                const appRef = await bootstrapApplication({
+                    KcRootComponent: TemplateComponent,
+                    kcProvider: provideKeycloakifyAngular({
+                        classes,
+                        getI18n,
+                        doUseDefaultCss,
+                    })
+                });
+
+                appRef.components.forEach(componentRef => {
+                    if ("page" in componentRef.instance) {
+                        componentRef.setInput("page", PageComponent);
                     }
                 });
             }
