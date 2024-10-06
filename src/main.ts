@@ -1,5 +1,4 @@
 import '@angular/compiler';
-
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { bootstrapKcApplication } from './kc.gen';
