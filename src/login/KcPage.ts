@@ -1,4 +1,5 @@
 import { getDefaultPageComponent, type KcPage } from '@keycloakify/angular/login';
+import { UserProfileFormFieldsComponent } from '@keycloakify/angular/login/components/user-profile-form-fields';
 import { TemplateComponent } from '@keycloakify/angular/login/containers/template';
 import type { ClassKey } from 'keycloakify/login';
 import type { KcContext } from './KcContext';
@@ -13,6 +14,7 @@ export async function getKcPage(pageId: KcContext['pageId']): Promise<KcPage> {
       return {
         PageComponent: await getDefaultPageComponent(pageId),
         TemplateComponent,
+        UserProfileFormFieldsComponent,
         doMakeUserConfirmPassword,
         doUseDefaultCss,
         classes,

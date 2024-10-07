@@ -52,6 +52,7 @@ export async function bootstrapKcApplication(params: {
                         TemplateComponent,
                         doUseDefaultCss,
                         classes,
+                        UserProfileFormFieldsComponent,
                         doMakeUserConfirmPassword,
                     },
                 ] = await Promise.all([
@@ -73,6 +74,12 @@ export async function bootstrapKcApplication(params: {
                 appRef.components.forEach(componentRef => {
                     if ("page" in componentRef.instance) {
                         componentRef.setInput("page", PageComponent);
+                    }
+                    if ("userProfileFormFields" in componentRef.instance) {
+                        componentRef.setInput(
+                            "userProfileFormFields",
+                            UserProfileFormFieldsComponent
+                        );
                     }
                 });
             }
